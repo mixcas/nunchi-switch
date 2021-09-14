@@ -1,36 +1,44 @@
-import React from 'react';
-import propTypes from 'prop-types';
+import React, { forwardRef } from 'react'
+import propTypes from 'prop-types'
 
-import styled, { css } from 'styled-components';
-import { Window } from 'react95';
+import styled, { css } from 'styled-components'
+import { Window } from 'react95'
 
 const StyledWindow = styled(Window)`
-  ${({ theme }) => css`
-    resize: both;
-    overflow: auto;
-  `}
-`;
+  resize: ${props => props.resizable ? 'both' : 'none'};
+  overflow: auto;
+  width: ${props => props.width};
+  height: ${props => props.height};
+`
 
-const CustomWindow = React.forwardRef(function CustomWindow(props, ref) {
-  const { resizable, children, handleResize, ...otherProps } = props;
+const CustomWindow = forwardRef(function CustomWindow(props, ref) {
+  const {
+    resizable,
+    children,
+    ...otherProps
+  } = props
 
   return (
-    <StyledWindow ref={ref} {...otherProps}>
+    <StyledWindow className='window' ref={ref} resizable={resizable} {...otherProps}>
       {children}
     </StyledWindow>
-  );
-});
+  )
+})
 
 CustomWindow.defaultProps = {
   resizable: false,
   shadow: true,
-  children: null
-};
+  children: null,
+  width: '500px',
+  height: '500px',
+}
 
 CustomWindow.propTypes = {
   shadow: propTypes.bool,
   resizable: propTypes.bool,
-  children: propTypes.node
-};
+  children: propTypes.node,
+  width: propTypes.number,
+  height: propTypes.number,
+}
 
-export default CustomWindow;
+export default CustomWindow

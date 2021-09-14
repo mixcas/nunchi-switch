@@ -13,11 +13,14 @@ import {
 import { openWindow } from './windowsManagerSlice'
 
 const WindowsManager  = () => {
-  const icons = useSelector(state => Object.keys(state.windowsManager).map(appWindow => ({
-    name: state.windowsManager[appWindow].name,
-  })))
+  const icons = useSelector(state => Object
+    .keys(state.windowsManager)
+    .map(appWindow => ({
+      name: state.windowsManager[appWindow].name,
+    }))
+  )
 
-  const openWindows= useSelector(state => Object.keys(state.windowsManager)
+  const openWindows = useSelector(state => Object.keys(state.windowsManager)
     .filter(appWindow => state.windowsManager[appWindow].isOpen)
     .map(appWindow => {
       const {
@@ -55,8 +58,8 @@ const WindowsManager  = () => {
               <button
                 onClick={() => dispatch(openWindow({
                   name,
-                  width: 500,
-                  height: 200,
+                  width: '500px',
+                  height: '200px',
                   x: 10,
                   y: 10,
                 }))}
@@ -76,40 +79,12 @@ const WindowsManager  = () => {
           name,
         } = appWindow
 
-        const handleResize = event => {
-          const {
-            offsetX,
-            offsetY,
-            clientX,
-            clientY,
-          } = event;
-
-          // console.log({
-            // offsetX,
-            // offsetY,
-            // clientX,
-            // clientY,
-          // });
-
-          // console.log(event);
-
-          const newWidth = width + (clientX - width - x + 35)
-          const newHeight = height + (clientY - height - y - 20)
-
-          dispatch(updateWindow({
-            name,
-            width: newWidth,
-            height: newHeight,
-          }));
-        }
-
         return (
           <Window
             key={appWindow.name}
-            handleResize={handleResize}
-            resizable
             shadow
-            style={{ width, height }}
+            width={width}
+            height={height}
           >
             <WindowHeader className='window-header'>
               <span>{appWindow.name}</span>
